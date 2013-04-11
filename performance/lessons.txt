@@ -1,0 +1,9 @@
+lesson 1:  pseudo selectors are slow
+lesson 2: cache jquery selections
+lesson 3: minimize number of direct dom manipulations
+lession 4: adding dom handlers is expensive, add once with $().on (or jmvc controller)
+lesson 5: query with ids, 
+
+//Speed enhancements that might not make much difference
+lesson 6: use .find() to give context
+lesson 7: use css({}) vs two css calls (or any other property or .attr)

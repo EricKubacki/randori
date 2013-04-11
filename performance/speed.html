@@ -1,0 +1,214 @@
+<html>
+
+<head>
+    <script src="jquery/jquery.js" ></script>
+    <script src="benchmark.js" ></script>
+    <script src="make_original_table.js" ></script>
+    <script src="make_prev_table.js" ></script>
+    <script src="make_table.js" ></script>
+    <style>
+        body {
+            font-size: .75em;
+        };
+        #display table {
+            border:2px solid;
+
+        }
+        #display table th {
+            background-color: blue;
+            border:1px solid;
+            color:white;
+            padding:3px;
+        }
+        #results td, #results th {
+            border:1px solid;
+            background-color: '#999999';   
+        }
+        .filler-top {
+            position:absolute;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <table id="results">
+        <tr>
+            <th>Test</th>
+        </tr>
+    </table>
+    <div id="display">
+        <!-- PUT TEMPERATURE TABLE HERE -->
+    </div>
+    <div class="filler-top">
+        <h1>test</h1>
+        <h2>test</h2>
+        <p>This is just some junk text.</p>
+        <ul>
+            <li class="item">test</li>
+            <li class="item">test</li>
+        <ul>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <div class="inner">some</div>
+        <ul>
+            <li class="item">test</li>
+            <li class="item">test</li>
+        <ul>
+        <ul>
+            <li class="item">test</li>
+            <li class="item">test</li>
+        <ul>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <h2>test</h2>
+        <ul>
+            <li class="item">test</li>
+            <li class="item">test</li>
+        <ul>
+        <ul>
+            <li class="item">test</li>
+            <li class="item">test</li>
+        <ul>
+    </div>
+
+    <!-- TEMPERATURE INFO IS BELOW -->
+    <div id="temps">
+        <div id="expl">
+            <h1>Why chart temperature changes in cities?</h1>
+            <ul>
+                <li>It is exciting.</li>
+                <li>It is fun.</li>
+                <li>It makes me want to move.<li>
+            </ul>
+            <p>Those are the main reasons.<p>
+        </div>
+        <div id="lists">
+            <h1>Temperatures in different locations on certain days</h1>
+            <div>
+                <h2>Bangor, ME</h2>
+                <ul>
+                    <li>12/1</li>
+                    <li>20 degrees</li>
+                    <li>12/2</li>
+                    <li>25 degrees</li>
+                    <li>12/3</li>
+                    <li>22 degrees</li>
+                    <li>12/5</li>
+                    <li>35 degrees</li>
+                </ul>
+            </div>
+            <div>
+                <h2>Orlando, FL</h2>
+                <ul>
+                    <li>12/1/</li>
+                    <li>65 degrees</li>
+                    <li>12/2</li>
+                    <li>72 degrees</li>
+                    <li>12/3</li>
+                    <li>68 degrees</li>
+                    <li>12/5</li>
+                    <li>74 degrees</li>
+                </ul>
+            </div>
+            <div>
+                <h2>Louisville, KY</h2>
+                <ul>
+                    <li>12/1</li>
+                    <li>50 degrees</li>
+                    <li>12/2</li>
+                    <li>55 degrees</li>
+                    <li>12/3</li>
+                    <li>56 degrees</li>
+                    <li>12/5</li>
+                    <li>50 degrees</li>
+                </ul>
+            </div>
+            <ul>
+                <li>random</li>
+            </ul>
+        </div>
+        <div id="desc">
+            <h2>Louisville, KY</h2>
+            <p>Is a city in Kentucky that I've never been to</p>
+            <h2>Bangor, ME</h2>
+            <p>Is a town in Maine that is very inhospitable.</p>
+            <h2>Orlando, FL</h2>
+            <p>Is a city where Mickey Mouse spends his winters.</p>
+        </div>
+    </div>
+    <button id="suite1">Run Table Code</button>
+    <button id="quickCompare">Run Quick Test</button>
+</body>
+
+<script>
+    if (!window.console) {
+        window.console = {log:function () {}};
+    }
+
+    var makeOriginalTable = function () {
+        $('#temps').makeOriginalTable();
+    }
+
+    var makePrevTable = function () {
+        $('#temps').makePrevTable();
+    }
+
+    var makeTable = function () {
+        $('#temps').makeTable();
+    }
+
+    var suite = new Benchmark.Suite;
+    suite.add('original', makeOriginalTable)
+    .add('previous', makePrevTable)
+    .add('optimized', makeTable)
+    .on('cycle', function(event) {
+        console.log(String(event.target));
+        $('#results').append('<tr><td>' + String(event.target) + '</td></tr>');
+    }).on('complete', function() {
+        var fastestMsg = 'Fastest is ' + this.filter('fastest').pluck('name');
+        console.log(fastestMsg);
+        $('#results').append('<tr><td>' + fastestMsg + '</td></tr>');
+    });
+
+    $('#suite1').click(function () {
+        suite.run();
+    });
+    
+
+    var quickCompare = new Benchmark.Suite;
+    quickCompare.add('A', function () {
+        var test = $('#lists li');
+    })
+    .add('B', function () {
+        var test = $('#lists').find('li');
+    })
+    .on('cycle', function(event) {
+        console.log(String(event.target));
+    }).on('complete', function() {
+        var fastestMsg = 'Fastest is ' + this.filter('fastest').pluck('name');
+        console.log(fastestMsg);
+    });
+
+    $('#quickCompare').click(function () {
+        quickCompare.run();
+    });
+</script>
+</html>
